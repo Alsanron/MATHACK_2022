@@ -1,7 +1,9 @@
 %Analysis of data from Matlab-mobile
 clear all; close all; clc;
+
 %%
-path.data = "Data/paseo_casa.mat";
+path.data = ["Data/andando.mat"];
+path.filter = ["filter/"];
 path.code = "Code/";
 
 for field = fieldnames(path)'
@@ -23,12 +25,12 @@ accY = data.Acceleration.Y;
 accZ = data.Acceleration.Z;
 timeAcc = timeElapsed(data.Acceleration.Timestamp);
 
-% ORIENTATION
-roll = data.Orientation.X;
-pitch = data.Orientation.Y;
-yaw = data.Orientation.Z;
-timeOrientation = timeElapsed(data.Orientation.Timestamp);
-% 
+% ORIENTATION - its included but not considered
+% roll = data.Orientation.X;
+% pitch = data.Orientation.Y;
+% yaw = data.Orientation.Z;
+% timeOrientation = timeElapsed(data.Orientation.Timestamp);
+
 % ANGULAR VELOCITY - BODY  AXIS
 wx = data.AngularVelocity.X;
 wy = data.AngularVelocity.Y;
@@ -52,11 +54,11 @@ plot(timeAcc, accY);
 plot(timeAcc, accZ);
 legend('accX', 'accY', 'accZ')
 
-subplot(5, 1, 4); hold on
-plot(timeOrientation, roll);
-plot(timeOrientation, pitch);
-plot(timeOrientation, yaw);
-legend('roll', 'pitch', 'yaw')
+% subplot(5, 1, 4); hold on
+% plot(timeOrientation, roll);
+% plot(timeOrientation, pitch);
+% plot(timeOrientation, yaw);
+% legend('roll', 'pitch', 'yaw')
 
 subplot(5, 1, 5); hold on
 plot(timeW, wx);
@@ -70,12 +72,17 @@ for ii = 1:length(accY)
     acc(ii) = sqrt(accX(ii)^2 + accY(ii)^2 + accZ(ii)^2);
 end
 acc = acc - mean(acc);
-load(strcat(path.code, "filter_acc2.mat"));
+load(strcat(path.filter, "FIR-LS-Acc.mat"));
 filt.acc = Hd;
 samplingFreq = 100; % Hz
 timeFilt = 0.2; % s
 nMeasFilt =  ceil(timeFilt / (1 / samplingFreq));
 
 figure(); hold on
-% plot(timeAcc, accX, timeAcc, filter(filt.acc, accX), timeAcc, movmean(accX, nMeasFilt)); legend('raw', 'filt-FIR', 'filt-Movmean');
-plot(timeAcc, acc, '-b', timeAcc, movmean(acc, nMeasFilt), '--r'); legend('raw', 'filt-FIR', 'filt-Movmean');
+% plot(timeAcc, acc, timeAcc, filter(filt.acc, acc), timeAcc, movmean(acc, nMeasFilt)); legend('raw', 'filt-FIR', 'filt-Movmean');
+subplot(2,1,1)
+plot(timeAcc, filter(filt.acc, acc)); 
+subplot(2,1,2)
+plot(timeAcc, acc); 
+% legend('raw', 'filt-FIR', 'filt-Movmean');
+% plot(timeAcc, acc, '-b', timeAcc, movmean(acc, nMeasFilt), '--r'); legend('raw', 'filt-FIR', 'filt-Movmean');
