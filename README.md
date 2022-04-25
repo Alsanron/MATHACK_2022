@@ -1,5 +1,5 @@
 # MATHACK_2022
-Project of the 2022 MatLab hackathon.
+Project of the 2022 MATLAB hackathon.
 --
 Challenge: develop an application using the data obtained with the Matlab Mobile app (i.e. acceleration, speed, position, angular velocity and orientation). The application should be related with at least 1 Sustainable Development Goal.
 --
