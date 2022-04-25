@@ -1,7 +1,10 @@
-%Analysis of data from Matlab-mobile
+% Analysis of data from Matlab-mobile
+% Signals are analyzed with the "signal-analyzer" module
+% Filters are designed with the "Filters designer" app
+
 clear all; close all; clc;
 
-%%
+%% Loads the data
 path.data = ["Data/andando.mat"];
 path.filter = ["filter/"];
 path.code = "Code/";
@@ -66,7 +69,7 @@ plot(timeW, wy);
 plot(timeW, wz);
 legend('wx', 'wy', 'wz');
 
-%% TEST FILTERED DATA
+%% Test the data with the designed filter. Hd object
 acc = accX * 0;
 for ii = 1:length(accY)
     acc(ii) = sqrt(accX(ii)^2 + accY(ii)^2 + accZ(ii)^2);
