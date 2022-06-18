@@ -83,9 +83,13 @@ nMeasFilt =  ceil(timeFilt / (1 / samplingFreq));
 
 figure(); hold on
 % plot(timeAcc, acc, timeAcc, filter(filt.acc, acc), timeAcc, movmean(acc, nMeasFilt)); legend('raw', 'filt-FIR', 'filt-Movmean');
-subplot(2,1,1)
-plot(timeAcc, filter(filt.acc, acc)); 
-subplot(2,1,2)
-plot(timeAcc, acc); 
-% legend('raw', 'filt-FIR', 'filt-Movmean');
+pass = timeAcc > 85;
+plot(timeAcc(pass), filter(filt.acc, acc(pass)), '-', 'LineWidth', 1.5); 
+hold on
+plot(timeAcc(pass), acc(pass), ':', 'LineWidth', 1.5); 
+grid minor
+xlabel('Time [s]');
+ylabel('Acceleration [m/s^2]')
+legend('raw', 'filt-FIR');
 % plot(timeAcc, acc, '-b', timeAcc, movmean(acc, nMeasFilt), '--r'); legend('raw', 'filt-FIR', 'filt-Movmean');
+% save('Filter\FIR-LS-Acc.mat', 'Hd', '-mat');

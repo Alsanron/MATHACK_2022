@@ -11,7 +11,7 @@ classdef main_class < matlab.System
         time_step = 0.01; % t_step = 1 / acquisition_frequency, s
         interval_acc = 0.01; % window in acceleration used for max calculation, s
         interval_vel = 2; % windows in velocity used for state calculation, s
-        threshold_acceleration = 20; % thresholds of acceleration used for step, m/s2
+        threshold_acceleration = 0; % thresholds of acceleration used for step, m/s2
         n_samples_vel; % number of samples used in the velocity window
         n_samples_acc; % number of samples used in the acceleration window
         time; % current time, s
@@ -26,8 +26,8 @@ classdef main_class < matlab.System
     end
 
     properties(GetAccess = private, Constant, Nontunable)
-        mode = "stream"; % "online"-> data from mobile, "offline" -> data from -mat
-        input_file = "andando.mat" % file used for data loading. It requires to contain at least acceleration and velocity
+        mode = "online"; % "online"-> data from mobile, "offline" -> data from -mat
+        input_file = "corriendo.mat" % file used for data loading. It requires to contain at least acceleration and velocity
         BotToken = '5171014369:AAGqkyeKK0Zj8EZbPiaH_DrZ_Q7U-b04C9k'; % users bot tokens
         ChatID = '950714104';
     end
@@ -147,7 +147,7 @@ classdef main_class < matlab.System
         
         function flag = isModeStream(obj)
             flag = false;
-            if strcmp(obj.mode, "stream")
+            if strcmp(obj.mode, "online")
                 flag = true;
             end
         end
